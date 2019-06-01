@@ -208,15 +208,15 @@ static void set_power_profile(int profile) {
         switch (profile) {
             case PROFILE_POWER_SAVE:
                 sysfs_write(GOVERNOR_PATH, GOV_POWERSAVE);
-                ALOGD("%s: activate powersave governor", __func__);
+                ALOGD("%s: activate powersave power profile", __func__);
                 break;
             case PROFILE_BALANCED:
-                sysfs_write(GOVERNOR_PATH, GOV_ONDEMAND);
-                ALOGD("%s: activate ondemand governor", __func__);
+                sysfs_write(GOVERNOR_PATH, GOV_BALANCED);
+                ALOGD("%s: activate balanced power profile", __func__);
                 break;
             case PROFILE_PERFORMANCE:
                 sysfs_write(GOVERNOR_PATH, GOV_PERFORMANCE);
-                ALOGD("%s: activate performance governor", __func__);
+                ALOGD("%s: activate performance power profile", __func__);
                 break;
         }
     }

@@ -16,7 +16,7 @@
 #define GOVERNOR_PATH "/sys/devices/system/cpu/cpu0/cpufreq/scaling_governor"
 
 #define GOV_PERFORMANCE      "performance"
-#define GOV_ONDEMAND         "ondemand"
+#define GOV_BALANCED         "interactive"
 #define GOV_PEGASUSQ         "pegasusq"
 #define GOV_POWERSAVE        "conservative"
 
