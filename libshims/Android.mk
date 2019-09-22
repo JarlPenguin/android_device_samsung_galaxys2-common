@@ -16,9 +16,40 @@
 LOCAL_PATH := $(call my-dir)
 
 include $(CLEAR_VARS)
-LOCAL_SRC_FILES := CameraSource.cpp \
-    ACodec.cpp
+LOCAL_SRC_FILES := pthread_join.cpp
+LOCAL_SYSTEM_SHARED_LIBRARIES := libc
+LOCAL_SHARED_LIBRARIES := libdl
+LOCAL_MODULE := libC
+LOCAL_MODULE_TAGS := optional
+LOCAL_MODULE_CLASS := SHARED_LIBRARIES
+LOCAL_VENDOR_MODULE := true
+include $(BUILD_SHARED_LIBRARY)
 
+include $(CLEAR_VARS)
+LOCAL_MODULE_TAGS := optional
+LOCAL_SRC_FILES := \
+	proto/pb_common.cpp \
+	proto/pb_decode.cpp \
+	proto/pb_encode.cpp \
+	proto/sap-api.pb.cpp \
+	sap-functions.cpp \
+	secril-sap.cpp \
+	sec-sap.cpp \
+	secril-shim.cpp
+LOCAL_SHARED_LIBRARIES := \
+	liblog \
+	libril \
+	libcutils \
+	libbinder \
+	libc
+LOCAL_C_INCLUDES += proto
+LOCAL_CFLAGS := -Wall -Werror -DPB_ENABLE_MALLOC -Wno-unused-parameter -DPB_FIELD_16BIT
+LOCAL_MODULE := libsecril-shim
+LOCAL_VENDOR_MODULE := true
+include $(BUILD_SHARED_LIBRARY)
+
+include $(CLEAR_VARS)
+LOCAL_SRC_FILES := CameraSource.cpp ACodec.cpp
 LOCAL_C_INCLUDES := \
     $(TOP)/frameworks/av/include \
     $(TOP)/frameworks/av/media/libstagefright/omx/include \
@@ -29,7 +60,6 @@ LOCAL_C_INCLUDES := \
     $(TOP)/frameworks/native/libs/nativewindow/include \
     $(TOP)/hardware/samsung/exynos4/hal/include \
     $(TOP)/device/samsung/galaxys2-common/include
-
 LOCAL_SHARED_LIBRARIES := \
     android.hardware.graphics.bufferqueue@1.0 \
     android.hardware.media.omx@1.0 \
@@ -44,10 +74,8 @@ LOCAL_SHARED_LIBRARIES := \
     libnativewindow \
     libui \
     libutils
-
 LOCAL_MODULE := libstagefright-shim
 LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_CLASS := SHARED_LIBRARIES
 LOCAL_VENDOR_MODULE := true
-
 include $(BUILD_SHARED_LIBRARY)

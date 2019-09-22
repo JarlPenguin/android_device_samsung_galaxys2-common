@@ -15,12 +15,14 @@
 # limitations under the License.
 #
 
-DEVICE_PATH := device/samsung/galaxys2-common
+COMMON_PATH := $(COMMON_PATH)
 
 # This variable is set first, so it can be overridden
 # by BoardConfigVendor.mk
 BOARD_USES_GENERIC_AUDIO := false
 BOARD_USES_LEGACY_MMAP := true
+
+# Architecture
 TARGET_CPU_ABI := armeabi-v7a
 TARGET_CPU_ABI2 := armeabi
 TARGET_CPU_SMP := true
@@ -33,18 +35,22 @@ ARCH_ARM_HAVE_TLS_REGISTER := true
 TARGET_USES_GRALLOC1 := true
 TARGET_USES_64_BIT_BINDER := true
 
+# Board
 BOARD_VENDOR := samsung
 TARGET_BOARD_PLATFORM := exynos4
 TARGET_SOC := exynos4210
 TARGET_BOOTLOADER_BOARD_NAME := smdk4210
 
+# Bootloader
 TARGET_NO_BOOTLOADER := true
 TARGET_NO_RADIOIMAGE := true
 TARGET_NO_SEPARATE_RECOVERY := true
 
+# Init
 TARGET_PROVIDES_INIT := true
 TARGET_PROVIDES_INIT_TARGET_RC := true
 
+# Kernel
 #BOARD_NAND_PAGE_SIZE := 4096
 #BOARD_NAND_SPARE_SIZE := 128
 BOARD_KERNEL_PAGESIZE := 4096
@@ -54,7 +60,7 @@ BOARD_KERNEL_IMAGE_NAME := zImage
 
 TARGET_NEEDS_PLATFORM_TEXT_RELOCATIONS := true
 
-# Bionic
+# Shims
 TARGET_LD_SHIM_LIBS := \
     /system/vendor/lib/libsec-ril.so|libsamsung_symbols.so
 
@@ -75,14 +81,14 @@ BOARD_CACHEIMAGE_PARTITION_SIZE := 104857600
 BOARD_FLASH_BLOCK_SIZE := 4096
 
 # Releasetools
-TARGET_RELEASETOOLS_EXTENSIONS := ./device/samsung/galaxys2-common
+TARGET_RELEASETOOLS_EXTENSIONS := $(COMMON_PATH)/releasetools
 
 # Hardware tunables
 BOARD_HARDWARE_CLASS := hardware/samsung/lineagehw \
-    device/samsung/galaxys2-common/lineagehw
+    $(COMMON_PATH)/lineagehw
 
 # Graphics
-BOARD_EGL_CFG := device/samsung/galaxys2-common/configs/egl.cfg
+BOARD_EGL_CFG := $(COMMON_PATH)/configs/egl.cfg
 USE_OPENGL_RENDERER := true
 TARGET_RUNNING_WITHOUT_SYNC_FRAMEWORK := true
 
@@ -112,10 +118,10 @@ BOARD_USE_YAMAHA_MC1N2_AUDIO := true
 # RIL
 BOARD_PROVIDES_LIBRIL := true
 BOARD_MODEM_TYPE := xmm6260
-BOARD_RIL_CLASS := ../../../device/samsung/galaxys2-common/ril
+BOARD_RIL_CLASS := $(COMMON_PATH)/ril
 
 # Key disabler
-JAVA_SOURCE_OVERLAYS := org.lineageos.keydisabler|$(DEVICE_PATH)/keydisabler|**/*.java
+JAVA_SOURCE_OVERLAYS := org.lineageos.keydisabler|$(COMMON_PATH)/keydisabler|**/*.java
 
 # Camera
 BOARD_CAMERA_HAVE_ISO := true
@@ -140,17 +146,17 @@ TARGET_NEEDS_NETD_DIRECT_CONNECT_RULE := true
 # Bluetooth
 BOARD_HAVE_BLUETOOTH := true
 BOARD_HAVE_BLUETOOTH_BCM := true
-BOARD_CUSTOM_BT_CONFIG := device/samsung/galaxys2-common/bluetooth/vnd_smdk4210.txt
+BOARD_CUSTOM_BT_CONFIG := $(COMMON_PATH)/bluetooth/vnd_smdk4210.txt
 
 # Selinux
 SELINUX_IGNORE_NEVERALLOWS := true
-BOARD_SEPOLICY_DIRS += device/samsung/galaxys2-common/selinux/vendor
-BOARD_PLAT_PUBLIC_SEPOLICY_DIR += device/samsung/galaxys2-common/selinux/public
-BOARD_PLAT_PRIVATE_SEPOLICY_DIR += device/samsung/galaxys2-common/selinux/private
+BOARD_SEPOLICY_DIRS += $(COMMON_PATH)/sepolicy/vendor
+BOARD_PLAT_PUBLIC_SEPOLICY_DIR += $(COMMON_PATH)/sepolicy/public
+BOARD_PLAT_PRIVATE_SEPOLICY_DIR += $(COMMON_PATH)/sepolicy/private
 
 # Recovery
-BOARD_CUSTOM_RECOVERY_KEYMAPPING := ../../device/samsung/galaxys2-common/recovery/recovery_keys.c
-BOARD_CUSTOM_GRAPHICS := ../../../device/samsung/galaxys2-common/recovery/graphics.c
+BOARD_CUSTOM_RECOVERY_KEYMAPPING := $(COMMON_PATH)/recovery/recovery_keys.c
+BOARD_CUSTOM_GRAPHICS := $(COMMON_PATH)/recovery/graphics.c
 BOARD_UMS_LUNFILE := "/sys/class/android_usb/android0/f_mass_storage/lun%d/file"
 BOARD_USES_MMCUTILS := true
 BOARD_HAS_NO_MISC_PARTITION := true
@@ -161,7 +167,7 @@ TARGET_RECOVERY_DENSITY := mdpi
 RECOVERY_FSTAB_VERSION := 2
 
 # Device specific headers
-TARGET_SPECIFIC_HEADER_PATH := device/samsung/galaxys2-common/include
+TARGET_SPECIFIC_HEADER_PATH := $(COMMON_PATH)/include
 
 # Charging mode
 BOARD_BATTERY_DEVICE_NAME := "battery"
@@ -172,11 +178,7 @@ WITH_LINEAGE_CHARGER := false
 
 # Boot.img
 BOARD_CUSTOM_BOOTIMG := true
-ifeq ($(WITH_MAGISKRAMDISK),true)
-BOARD_CUSTOM_BOOTIMG_MK := device/samsung/galaxys2-common/shbootimg_magisk.mk
-else
-BOARD_CUSTOM_BOOTIMG_MK := device/samsung/galaxys2-common/shbootimg.mk
-endif
+BOARD_CUSTOM_BOOTIMG_MK := $(COMMON_PATH)/shbootimg.mk
 
 # Override healthd HAL
 BOARD_HAL_STATIC_LIBRARIES := libhealthd.exynos4
